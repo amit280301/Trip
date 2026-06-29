@@ -289,10 +289,11 @@ function bindEvents() {
   document.getElementById('filterSearchInput').addEventListener('input', render);
   document.getElementById('filterMonthSelect').addEventListener('change', render);
   document.getElementById('filterMemberSelect').addEventListener('change', render);
-  
   // Backup: Export / Import
   document.getElementById('exportBackupBtn').addEventListener('click', exportBackup);
   document.getElementById('importBackupInput').addEventListener('change', importBackup);
+  document.getElementById('importCSVInput').addEventListener('change', importCSV);
+  document.getElementById('downloadCSVTemplateBtn').addEventListener('click', downloadCSVTemplate);
   
   // Reset Data Modal Dialogues
   const clearBtn = document.getElementById('clearDataBtn');
@@ -689,6 +690,212 @@ function importBackup(e) {
   
   fileReader.readAsText(file);
 }
+
+/**
+ * Downloads a sample CSV file structure as template
+ */
+function downloadCSVTemplate() {
+  const csvContent = "data:text/csv;charset=utf-8,Date,Tiffins,Price,Shared By,Notes\r\n" +
+    `${getTodayDateString()},2,80,"Amit, Suresh, Alpesh",Dinner example\r\n` +
+    `${getTodayDateString()},1,80,"Amit, Alpesh",Lunch example\r\n`;
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "tiffin_expenses_template.csv");
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  showToast('Downloaded sample CSV template.', 'success');
+}
+
+/**
+ * Reads uploaded CSV file and processes input lines
+ */
+function importCSV(e) {
+  const fileReader = new FileReader();
+  const file = e.target.files[0];
+  if (!file) return;
+
+  fileReader.onload = function(event) {
+    try {
+      const text = event.target.result;
+      const parsedLines = parseCSV(text);
+
+      if (!parsedLines || parsedLines.length < 2) {
+        throw new Error('CSV file is empty or missing data rows.');
+      }
+
+      // Check index of headers case-insensitively
+      const headers = parsedLines[0].map(h => h.trim().toLowerCase());
+      let dateIdx = -1, tiffinsIdx = -1, priceIdx = -1, membersIdx = -1, notesIdx = -1;
+
+      for (let col = 0; col < headers.length; col++) {
+        const hText = headers[col];
+        if (hText.includes('date')) dateIdx = col;
+        else if (hText.includes('tiffin') || hText.includes('qty') || hText.includes('count') || hText.includes('bought')) tiffinsIdx = col;
+        else if (hText.includes('price') || hText.includes('rate') || hText.includes('cost')) priceIdx = col;
+        else if (hText.includes('share') || hText.includes('member') || hText.includes('people') || hText.includes('who') || hText.includes('by')) membersIdx = col;
+        else if (hText.includes('note') || hText.includes('desc') || hText.includes('info')) notesIdx = col;
+      }
+
+      // Fallback to standard indices if not found
+      if (dateIdx === -1) dateIdx = 0;
+      if (tiffinsIdx === -1) tiffinsIdx = 1;
+      if (priceIdx === -1) priceIdx = 2;
+      if (membersIdx === -1) membersIdx = 3;
+      if (notesIdx === -1) notesIdx = 4;
+
+      const newExpenses = [];
+      let skippedRows = 0;
+
+      for (let i = 1; i < parsedLines.length; i++) {
+        const row = parsedLines[i];
+        
+        // Skip empty rows
+        if (row.length === 0 || (row.length === 1 && row[0].trim() === '')) {
+          continue;
+        }
+
+        const rawDate = row[dateIdx] ? row[dateIdx].trim() : '';
+        const rawTiffins = row[tiffinsIdx] ? row[tiffinsIdx].trim() : '';
+        const rawPrice = row[priceIdx] ? row[priceIdx].trim() : '';
+        const rawMembersStr = row[membersIdx] ? row[membersIdx].trim() : '';
+        const rawNotes = row[notesIdx] ? row[notesIdx].trim() : '';
+
+        if (!rawDate || !rawTiffins || !rawPrice) {
+          skippedRows++;
+          continue;
+        }
+
+        // Try to normalize date format to YYYY-MM-DD
+        let normalizedDate = '';
+        if (/^\d{4}-\d{2}-\d{2}$/.test(rawDate)) {
+          normalizedDate = rawDate;
+        } else {
+          // Attempt parsing DD/MM/YYYY or DD-MM-YYYY
+          const parts = rawDate.split(/[-\/]/);
+          if (parts.length === 3) {
+            if (parts[2].length === 4) {
+              normalizedDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+            } else if (parts[0].length === 4) {
+              normalizedDate = `${parts[0]}-${parts[1].padStart(2, '0')}-${parts[2].padStart(2, '0')}`;
+            }
+          }
+        }
+
+        // Validate date
+        if (!normalizedDate || isNaN(Date.parse(normalizedDate))) {
+          skippedRows++;
+          continue;
+        }
+
+        const tiffins = parseFloat(rawTiffins);
+        const price = parseFloat(rawPrice);
+
+        if (isNaN(tiffins) || tiffins <= 0 || isNaN(price) || price <= 0) {
+          skippedRows++;
+          continue;
+        }
+
+        // Detect members in row
+        const members = [];
+        const lowerMembersStr = rawMembersStr.toLowerCase();
+        if (lowerMembersStr.includes('amit')) members.push('Amit');
+        if (lowerMembersStr.includes('suresh')) members.push('Suresh');
+        if (lowerMembersStr.includes('alpesh')) members.push('Alpesh');
+
+        // Default to all check in case of empty field
+        if (members.length === 0) {
+          members.push('Amit', 'Suresh', 'Alpesh');
+        }
+
+        const total = tiffins * price;
+        const share = total / members.length;
+
+        newExpenses.push({
+          id: String(Date.now() + i),
+          date: normalizedDate,
+          tiffins: tiffins,
+          price: price,
+          total: total,
+          members: members,
+          share: share,
+          notes: rawNotes
+        });
+      }
+
+      if (newExpenses.length === 0) {
+        throw new Error(`No valid expense lines found in CSV. (Skipped ${skippedRows} rows)`);
+      }
+
+      // Request confirmation of replace vs append
+      const appendChoice = confirm(
+        `Parsed ${newExpenses.length} valid expense(s) from CSV.\n` +
+        (skippedRows > 0 ? `(Skipped ${skippedRows} invalid rows)\n\n` : '\n') +
+        `Press OK to APPEND these records to your existing history.\n` +
+        `Press Cancel to OVERWRITE and replace your entire expense history.`
+      );
+
+      if (appendChoice) {
+        state.expenses = [...state.expenses, ...newExpenses];
+        showToast(`Appended ${newExpenses.length} records successfully!`, 'success');
+      } else {
+        state.expenses = newExpenses;
+        showToast(`Restored database with ${newExpenses.length} records from CSV!`, 'success');
+      }
+
+      saveState();
+      render();
+
+    } catch (err) {
+      console.error(err);
+      showToast(`CSV Import failed: ${err.message}`, 'error');
+    } finally {
+      // Clear input so same file can be uploaded again
+      e.target.value = '';
+    }
+  };
+
+  fileReader.readAsText(file);
+}
+
+/**
+ * Robust RFC 4180 compliant CSV parser
+ */
+function parseCSV(text) {
+  const lines = [];
+  let row = [""];
+  let insideQuote = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const nextChar = text[i + 1];
+
+    if (char === '"') {
+      if (insideQuote && nextChar === '"') {
+        row[row.length - 1] += '"';
+        i++; // skip escaped quote
+      } else {
+        insideQuote = !insideQuote;
+      }
+    } else if (char === ',' && !insideQuote) {
+      row.push("");
+    } else if ((char === '\r' || char === '\n') && !insideQuote) {
+      if (char === '\r' && nextChar === '\n') {
+        i++;
+      }
+      lines.push(row);
+      row = [""];
+    } else {
+      row[row.length - 1] += char;
+    }
+  }
+  if (row.length > 1 || row[0] !== "") {
+    lines.push(row);
+  }
+  return lines;
+}
+
 
 /**
  * Resets entire storage
