@@ -674,8 +674,12 @@ input.is-invalid:focus, select.is-invalid:focus {
 
 .backup-actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.btn-link:hover {
+  color: var(--primary-hover) !important;
 }
 
 .cursor-pointer {
