@@ -1,416 +1,423 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Goa Friends Trip - Make Plans with Strangers!</title>
-        <link rel="stylesheet" href="styles.css" />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
-            rel="stylesheet"
-        />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-        />
-    </head>
-    <body>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-overlay"></div>
-            <div class="container">
-                <div class="hero-content animate__animated animate__fadeInUp">
-                    <h1 class="hero-title">Let's Make a Plan with Strangers!</h1>
-                    <p class="hero-subtitle">
-                        Join our Goa adventure and turn strangers into lifelong friends
-                    </p>
-                    <div class="trip-badges">
-                        <span class="badge"
-                            ><i class="fas fa-calendar"></i> Dec 15-20,
-                            2025</span
-                        >
-                        <span class="badge"
-                            ><i class="fas fa-users"></i> Limited to 10
-                            People</span
-                        >
-                        <span class="badge"
-                            ><i class="fas fa-map-marker-alt"></i> North & South
-                            Goa</span
-                        >
-                    </div>
-                    <a
-                        href="#registration"
-                        class="cta-button animate__animated animate__pulse animate__infinite"
-                    >
-                        Join Our Friend Circle!
-                    </a>
-                </div>
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tiffin Expense Tracker</title>
+  <meta name="description" content="A modern, single-page expense tracker for sharing tiffin costs among roommates or colleagues. Track, split, filter, and export tiffin costs easily.">
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Header Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="brand-text">
+          <h1>Tiffin Expense Tracker</h1>
+          <p>Split tiffin costs easily & equitably</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Quick Settings: Default Price -->
+        <div class="default-price-setting">
+          <label for="defaultPriceInput">Default Price: </label>
+          <div class="price-input-wrapper">
+            <span>₹</span>
+            <input type="number" id="defaultPriceInput" min="1" step="0.5" value="80">
+          </div>
+        </div>
+        <!-- Theme Toggle -->
+        <button id="themeToggleBtn" class="icon-btn" title="Toggle Light/Dark Mode" aria-label="Toggle Light/Dark Mode">
+          <!-- Moon Icon (for Light theme) -->
+          <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          <!-- Sun Icon (for Dark theme) -->
+          <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-icon hidden"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="app-container">
+
+    <!-- Dashboard: Key Stats -->
+    <section class="dashboard-stats">
+      <!-- Total Spent Card -->
+      <div class="stat-card accent-purple">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"/><line x1="12" y1="18" x2="12" y2="18"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Total Spent</span>
+          <span class="stat-value" id="statTotalSpent">₹0.00</span>
+        </div>
+      </div>
+
+      <!-- Total Tiffins Card -->
+      <div class="stat-card accent-blue">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Tiffins Purchased</span>
+          <span class="stat-value" id="statTotalTiffins">0</span>
+        </div>
+      </div>
+
+      <!-- Monthly Total Card -->
+      <div class="stat-card accent-green">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Monthly Total</span>
+          <span class="stat-value" id="statMonthlyTotal">₹0.00</span>
+        </div>
+      </div>
+
+      <!-- Today's Total Card -->
+      <div class="stat-card accent-orange">
+        <div class="stat-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Today's Total</span>
+          <span class="stat-value" id="statTodayTotal">₹0.00</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grid Layout for Members & Input Form -->
+    <div class="main-grid">
+
+      <!-- Left Column: Add/Edit Expense Form & Data Management -->
+      <div class="grid-left">
+        <!-- Add/Edit Form Card -->
+        <div class="card form-card" id="formCard">
+          <div class="card-header">
+            <h2 id="formTitle">Add Tiffin Expense</h2>
+            <span class="form-badge hidden" id="editBadge">EDITING</span>
+          </div>
+          <form id="expenseForm" novalidate>
+            <input type="hidden" id="editExpenseId">
+            
+            <!-- Date Input -->
+            <div class="form-group">
+              <label for="expenseDate">Date</label>
+              <input type="date" id="expenseDate" required>
+              <span class="error-msg" id="dateError">Please select a valid date.</span>
             </div>
-            <div class="wave-animation">
-                <svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M0,100 C150,60 350,0 600,50 C850,100 1050,60 1200,100 L1200,120 L0,120 Z"
-                        fill="#ffffff"
-                    />
-                </svg>
+
+            <!-- Tiffins and Price in one row -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="tiffinsCount">No. of Tiffins</label>
+                <input type="number" id="tiffinsCount" min="0.1" step="any" placeholder="e.g. 2" required>
+                <span class="error-msg" id="tiffinsError">Enter a positive number.</span>
+              </div>
+              <div class="form-group">
+                <label for="pricePerTiffin">Price per Tiffin (₹)</label>
+                <input type="number" id="pricePerTiffin" min="0.1" step="any" placeholder="80" required>
+                <span class="error-msg" id="priceError">Enter a positive price.</span>
+              </div>
             </div>
-        </section>
 
-        <!-- Trip Highlights -->
-        <section class="highlights">
-            <div class="container">
-                <h2 class="section-title animate__animated animate__fadeInUp">
-                    Trip Highlights
-                </h2>
-                <div class="highlights-grid">
-                    <div
-                        class="highlight-card animate__animated animate__fadeInLeft"
-                    >
-                        <div class="highlight-icon">
-                            <i class="fas fa-umbrella-beach"></i>
-                        </div>
-                        <h3>Beach Paradise</h3>
-                        <p>
-                            Explore pristine beaches of Baga, Calangute, and
-                            Anjuna with crystal clear waters
-                        </p>
-                    </div>
-                    <div
-                        class="highlight-card animate__animated animate__fadeInUp"
-                    >
-                        <div class="highlight-icon">
-                            <i class="fas fa-music"></i>
-                        </div>
-                        <h3>Nightlife & Parties</h3>
-                        <p>
-                            Experience Goa's legendary nightlife with beach
-                            parties and club hopping
-                        </p>
-                    </div>
-                    <div
-                        class="highlight-card animate__animated animate__fadeInRight"
-                    >
-                        <div class="highlight-icon">
-                            <i class="fas fa-utensils"></i>
-                        </div>
-                        <h3>Local Cuisine</h3>
-                        <p>
-                            Savor authentic Goan seafood, Portuguese delicacies,
-                            and tropical cocktails
-                        </p>
-                    </div>
-                    <div
-                        class="highlight-card animate__animated animate__fadeInLeft"
-                    >
-                        <div class="highlight-icon">
-                            <i class="fas fa-ship"></i>
-                        </div>
-                        <h3>Water Sports</h3>
-                        <p>
-                            Jet skiing, parasailing, banana boat rides, and
-                            dolphin spotting adventures
-                        </p>
-                    </div>
-                    <div
-                        class="highlight-card animate__animated animate__fadeInUp"
-                    >
-                        <div class="highlight-icon">
-                            <i class="fas fa-camera"></i>
-                        </div>
-                        <h3>Instagram Spots</h3>
-                        <p>
-                            Capture stunning sunsets, colorful markets, and
-                            Portuguese architecture
-                        </p>
-                    </div>
-                    <div
-                        class="highlight-card animate__animated animate__fadeInRight"
-                    >
-                        <div class="highlight-icon">
-                            <i class="fas fa-bed"></i>
-                        </div>
-                        <h3>Beach Resort Stay</h3>
-                        <p>
-                            Luxury beachfront accommodation with all amenities
-                            and sea views
-                        </p>
-                    </div>
-                </div>
+            <!-- Share Members Checks -->
+            <div class="form-group">
+              <label>Shared By (Select Members)</label>
+              <div class="checkbox-group">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="memberAmit" value="Amit" checked>
+                  <span class="custom-checkbox"></span>
+                  Amit
+                </label>
+                <label class="checkbox-container">
+                  <input type="checkbox" id="memberSuresh" value="Suresh" checked>
+                  <span class="custom-checkbox"></span>
+                  Suresh
+                </label>
+                <label class="checkbox-container">
+                  <input type="checkbox" id="memberAlpesh" value="Alpesh" checked>
+                  <span class="custom-checkbox"></span>
+                  Alpesh
+                </label>
+              </div>
+              <span class="error-msg" id="membersError">Select at least one member.</span>
             </div>
-        </section>
 
-        <!-- Registration Section -->
-        <section class="registration" id="registration">
-            <div class="container">
-                <div class="registration-content">
-                    <div
-                        class="registration-info animate__animated animate__fadeInLeft"
-                    >
-                        <h2>Join Our Friend Circle!</h2>
-                        <div class="trip-details">
-                            <div class="detail-item">
-                                <i class="fas fa-calendar-alt"></i>
-                                <div>
-                                    <h4>Trip Dates</h4>
-                                    <p>
-                                        December 15-20, 2025 (5 Days, 4 Nights)
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-heart"></i>
-                                <div>
-                                    <h4>Trip Goal</h4>
-                                    <p>Make new friends and create amazing memories together</p>
-                                </div>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-handshake"></i>
-                                <div>
-                                    <h4>Planning Together</h4>
-                                    <p>
-                                        Once we have 10 people, we'll plan everything together - budget, activities, and accommodations
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-users"></i>
-                                <div>
-                                    <h4>Friend Circle Size</h4>
-                                    <p>Perfect group of 10 strangers becoming friends</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="spots-counter">
-                            <div class="spots-info">
-                                <span id="spotsLeft">10</span> friends needed
-                            </div>
-                            <div class="progress-bar">
-                                <div
-                                    class="progress-fill"
-                                    id="progressFill"
-                                ></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div
-                        class="registration-form-container animate__animated animate__fadeInRight"
-                    >
-                        <div
-                            id="tripFullMessage"
-                            class="trip-full-message"
-                            style="display: none"
-                        >
-                            <div class="full-message-content">
-                                <i class="fas fa-heart"></i>
-                                <h3>Friend Circle Complete – Stay Tuned for Next Group!</h3>
-                                <p>
-                                    This friend-making adventure is at capacity.
-                                    Follow us for updates on our next Goa friendship trip!
-                                </p>
-                                <div class="social-links">
-                                    <a href="#" class="social-link"
-                                        ><i class="fab fa-instagram"></i
-                                    ></a>
-                                    <a href="#" class="social-link"
-                                        ><i class="fab fa-facebook"></i
-                                    ></a>
-                                    <a href="#" class="social-link"
-                                        ><i class="fab fa-whatsapp"></i
-                                    ></a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <form
-                            id="registrationForm"
-                            class="registration-form"
-                            action="https://formsubmit.co/rathod6085@gmail.com"
-                            method="POST"
-                        >
-                            <h3>Registration Form</h3>
-                            
-                            <div class="security-notice">
-                                <i class="fas fa-shield-alt"></i>
-                                <p><strong>Important:</strong> This trip is only for strangers looking to make new friends. Our team will verify all leads and confirm details to ensure a safe and secure experience for everyone.</p>
-                            </div>
-
-                            <!-- FormSubmit.co hidden fields -->
-                            <input
-                                type="hidden"
-                                name="_next"
-                                value=""
-                            />
-                            <input
-                                type="hidden"
-                                name="_subject"
-                                value="New Goa Trip Registration - Verification Required"
-                            />
-                            <input
-                                type="hidden"
-                                name="_captcha"
-                                value="false"
-                            />
-                            <input
-                                type="hidden"
-                                name="_template"
-                                value="table"
-                            />
-
-                            <div class="form-group">
-                                <label for="name">Full Name *</label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    required
-                                />
-                                <span
-                                    class="error-message"
-                                    id="nameError"
-                                ></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="email">Email Address *</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    required
-                                />
-                                <span
-                                    class="error-message"
-                                    id="emailError"
-                                ></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="phone">Phone Number *</label>
-                                <input
-                                    type="tel"
-                                    id="phone"
-                                    name="phone"
-                                    required
-                                />
-                                <span
-                                    class="error-message"
-                                    id="phoneError"
-                                ></span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="travelPreference"
-                                    >Travel Preference (Optional)</label
-                                >
-                                <select
-                                    id="travelPreference"
-                                    name="travel_preference"
-                                >
-                                    <option value="">
-                                        Select your preference
-                                    </option>
-                                    <option value="adventure">
-                                        Adventure & Water Sports
-                                    </option>
-                                    <option value="relaxation">
-                                        Beach Relaxation
-                                    </option>
-                                    <option value="nightlife">
-                                        Nightlife & Parties
-                                    </option>
-                                    <option value="culture">
-                                        Culture & Sightseeing
-                                    </option>
-                                    <option value="photography">
-                                        Photography
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="form-group captcha-group">
-                                <label for="captcha"
-                                    >Anti-Bot Protection: Type the word "GOA"
-                                    *</label
-                                >
-                                <input
-                                    type="text"
-                                    id="captcha"
-                                    name="captcha_response"
-                                    required
-                                    placeholder="Type GOA"
-                                />
-                                <span
-                                    class="error-message"
-                                    id="captchaError"
-                                ></span>
-                            </div>
-
-                            <button
-                                type="submit"
-                                class="submit-button"
-                                id="submitButton"
-                            >
-                                <span class="button-text">Join Friend Circle</span>
-                                <span
-                                    class="button-loader"
-                                    style="display: none"
-                                >
-                                    <i class="fas fa-spinner fa-spin"></i>
-                                    Processing...
-                                </span>
-                            </button>
-                        </form>
-
-                        <div
-                            id="successMessage"
-                            class="success-message"
-                            style="display: none"
-                        >
-                            <div class="success-content">
-                                <i class="fas fa-check-circle"></i>
-                                <h3>Welcome to Our Friend Circle!</h3>
-                                <p>
-                                    Amazing! You're now part of our Goa friendship group! Our team will verify your details and contact you within 24 hours. Once we have all 10 friends, we'll plan everything together - from budget to activities. Get ready to make lifelong connections!
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- Notes -->
+            <div class="form-group">
+              <label for="expenseNotes">Notes (Optional)</label>
+              <input type="text" id="expenseNotes" placeholder="e.g. Dinner, extra rotis, etc.">
             </div>
-        </section>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-section">
-                        <h4>Contact Us</h4>
-                        <p>
-                            <i class="fas fa-envelope"></i>
-                            rathod6085@gmail.com
-                        </p>
-                        <p><i class="fas fa-phone"></i> +91 63547 67176</p>
-                    </div>
-                    <div class="footer-section">
-                        <h4>Friend Trip Info</h4>
-                        <p>Dec 15-20, 2025</p>
-                        <p>5 Days, 4 Nights</p>
-                        <p>Planned Together by Friends</p>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <p>&copy; 2025 Goa Friends Trip. All rights reserved.</p>
-                </div>
+            <!-- Dynamic Live Calculations Summary Inside Form -->
+            <div class="form-summary" id="liveSplitSummary">
+              <div class="summary-row">
+                <span>Total Amount:</span>
+                <strong id="liveTotalAmount">₹0.00</strong>
+              </div>
+              <div class="summary-row">
+                <span>Split Share (per selected):</span>
+                <strong id="liveSplitShare">₹0.00</strong>
+              </div>
             </div>
-        </footer>
 
-        <script src="script.js"></script>
-    </body>
+            <!-- Form Actions -->
+            <div class="form-actions">
+              <button type="button" id="cancelEditBtn" class="btn btn-secondary hidden">Cancel</button>
+              <button type="submit" id="saveExpenseBtn" class="btn btn-primary">Save Expense</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Data Import/Export & Reset Card -->
+        <div class="card settings-card">
+          <div class="card-header">
+            <h2>Data Backup & Settings</h2>
+          </div>
+          <div class="settings-content">
+            <p class="settings-desc">Your data is safely stored locally in your browser (valid for 365 days). You can back up or restore your data below.</p>
+            <div class="backup-actions">
+              <button id="exportBackupBtn" class="btn btn-outline">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                Export JSON
+              </button>
+              <label for="importBackupInput" class="btn btn-outline cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                Import JSON
+              </label>
+              <input type="file" id="importBackupInput" accept=".json" class="hidden">
+            </div>
+            <hr class="card-divider">
+            <div class="danger-zone">
+              <h3>Danger Zone</h3>
+              <button id="clearDataBtn" class="btn btn-danger w-100">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                Clear All Data
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Member Totals & Analytics Reports -->
+      <div class="grid-right">
+        <!-- Members Leaderboard -->
+        <div class="card members-card">
+          <div class="card-header">
+            <h2>Individual Expenses & Meals</h2>
+          </div>
+          <div class="members-list">
+            <!-- Amit Card -->
+            <div class="member-detail-card" data-member="Amit">
+              <div class="member-avatar accent-amit">AM</div>
+              <div class="member-info">
+                <h3>Amit</h3>
+                <div class="member-metrics">
+                  <div class="metric">
+                    <span class="metric-label">Meals</span>
+                    <span class="metric-value" id="mealsAmit">0</span>
+                  </div>
+                  <div class="metric">
+                    <span class="metric-label">Tiffins Share</span>
+                    <span class="metric-value" id="tiffinShareAmit">0.00</span>
+                  </div>
+                </div>
+              </div>
+              <div class="member-total">
+                <span class="total-label">Total Owed</span>
+                <span class="total-value" id="totalAmit">₹0.00</span>
+              </div>
+            </div>
+
+            <!-- Suresh Card -->
+            <div class="member-detail-card" data-member="Suresh">
+              <div class="member-avatar accent-suresh">SU</div>
+              <div class="member-info">
+                <h3>Suresh</h3>
+                <div class="member-metrics">
+                  <div class="metric">
+                    <span class="metric-label">Meals</span>
+                    <span class="metric-value" id="mealsSuresh">0</span>
+                  </div>
+                  <div class="metric">
+                    <span class="metric-label">Tiffins Share</span>
+                    <span class="metric-value" id="tiffinShareSuresh">0.00</span>
+                  </div>
+                </div>
+              </div>
+              <div class="member-total">
+                <span class="total-label">Total Owed</span>
+                <span class="total-value" id="totalSuresh">₹0.00</span>
+              </div>
+            </div>
+
+            <!-- Alpesh Card -->
+            <div class="member-detail-card" data-member="Alpesh">
+              <div class="member-avatar accent-alpesh">AL</div>
+              <div class="member-info">
+                <h3>Alpesh</h3>
+                <div class="member-metrics">
+                  <div class="metric">
+                    <span class="metric-label">Meals</span>
+                    <span class="metric-value" id="mealsAlpesh">0</span>
+                  </div>
+                  <div class="metric">
+                    <span class="metric-label">Tiffins Share</span>
+                    <span class="metric-value" id="tiffinShareAlpesh">0.00</span>
+                  </div>
+                </div>
+              </div>
+              <div class="member-total">
+                <span class="total-label">Total Owed</span>
+                <span class="total-value" id="totalAlpesh">₹0.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comparative Reports Card -->
+        <div class="card reports-card">
+          <div class="card-header">
+            <h2>Comparative Reports Summary</h2>
+          </div>
+          <div class="reports-container">
+            <table class="report-table">
+              <thead>
+                <tr>
+                  <th>Period</th>
+                  <th>Total Spent</th>
+                  <th>Amit Share</th>
+                  <th>Suresh Share</th>
+                  <th>Alpesh Share</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="reportCurrentMonth">
+                  <td class="period-name">Current Month</td>
+                  <td class="period-total" id="reportCMTotal">₹0.00</td>
+                  <td id="reportCMAmit">₹0.00</td>
+                  <td id="reportCMSuresh">₹0.00</td>
+                  <td id="reportCMAlpesh">₹0.00</td>
+                </tr>
+                <tr id="reportPreviousMonth">
+                  <td class="period-name">Previous Month</td>
+                  <td class="period-total" id="reportPMTotal">₹0.00</td>
+                  <td id="reportPMAmit">₹0.00</td>
+                  <td id="reportPMSuresh">₹0.00</td>
+                  <td id="reportPMAlpesh">₹0.00</td>
+                </tr>
+                <tr id="reportLifetime">
+                  <td class="period-name font-semibold">Lifetime Total</td>
+                  <td class="period-total font-semibold" id="reportLFTotal">₹0.00</td>
+                  <td class="font-semibold" id="reportLFAmit">₹0.00</td>
+                  <td class="font-semibold" id="reportLFSuresh">₹0.00</td>
+                  <td class="font-semibold" id="reportLFAlpesh">₹0.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- History and Filters Section -->
+    <section class="card history-card">
+      <div class="history-header">
+        <h2>Expense History</h2>
+        
+        <!-- Filters Controls -->
+        <div class="filters-bar">
+          <div class="filter-group search-filter">
+            <div class="input-icon-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="filterSearchInput" placeholder="Search notes...">
+            </div>
+          </div>
+          <div class="filter-group select-filter">
+            <label for="filterMonthSelect" class="sr-only">Month</label>
+            <select id="filterMonthSelect">
+              <option value="all">All Months</option>
+              <!-- Populated dynamically via JS -->
+            </select>
+          </div>
+          <div class="filter-group select-filter">
+            <label for="filterMemberSelect" class="sr-only">Member</label>
+            <select id="filterMemberSelect">
+              <option value="all">All Members</option>
+              <option value="Amit">Amit</option>
+              <option value="Suresh">Suresh</option>
+              <option value="Alpesh">Alpesh</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Expense History Table -->
+      <div class="table-container">
+        <table class="history-table" id="historyTable">
+          <thead>
+            <tr>
+              <th class="col-date">Date</th>
+              <th class="col-tiffins">Tiffins</th>
+              <th class="col-price">Price</th>
+              <th class="col-total">Total</th>
+              <th class="col-members">Shared By</th>
+              <th class="col-share">Per-person Share</th>
+              <th class="col-notes">Notes</th>
+              <th class="col-actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="expenseTableBody">
+            <!-- Populated dynamically via JS -->
+          </tbody>
+        </table>
+        
+        <!-- Empty State -->
+        <div id="tableEmptyState" class="empty-state hidden">
+          <div class="empty-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <h3>No expenses found</h3>
+          <p>Try clearing filters or add a new tiffin expense to start tracking!</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal / Confirmation Alert UI -->
+  <div class="modal-overlay hidden" id="confirmModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Clear All Data?</h2>
+      </div>
+      <div class="modal-body">
+        <p>This action will permanently delete all records of tiffin expenses and settings from localStorage. This action cannot be undone.</p>
+        <p class="warning-text">It is recommended to export your data first as a backup.</p>
+      </div>
+      <div class="modal-actions">
+        <button id="cancelResetBtn" class="btn btn-secondary">No, Cancel</button>
+        <button id="confirmResetBtn" class="btn btn-danger">Yes, Clear Everything</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JavaScript File -->
+  <script src="script.js"></script>
+</body>
 </html>
