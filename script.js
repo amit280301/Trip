@@ -938,6 +938,7 @@ function render() {
   
   const previousMonthExpenses = state.expenses.filter(exp => exp.date.substring(0, 7) === prevMonthStr);
   const previousMonthStats = calculateSubsetTotals(previousMonthExpenses);
+  const currentMonthMemberStats = currentMonthStats;
   
   // 2. Render Header Stats Grid
   document.getElementById('statTotalSpent').textContent = formatCurrency(totalStats.spent);
@@ -947,19 +948,19 @@ function render() {
   
   // 3. Render Individual Members Dashboard Cards
   // Amit
-  document.getElementById('mealsAmit').textContent = totalStats.mealsAmit;
-  document.getElementById('tiffinShareAmit').textContent = totalStats.tiffinShareAmit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  document.getElementById('totalAmit').textContent = formatCurrency(totalStats.Amit);
+  document.getElementById('mealsAmit').textContent = currentMonthMemberStats.mealsAmit;
+  document.getElementById('tiffinShareAmit').textContent = currentMonthMemberStats.tiffinShareAmit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  document.getElementById('totalAmit').textContent = formatCurrency(currentMonthMemberStats.Amit);
   
   // Suresh
-  document.getElementById('mealsSuresh').textContent = totalStats.mealsSuresh;
-  document.getElementById('tiffinShareSuresh').textContent = totalStats.tiffinShareSuresh.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  document.getElementById('totalSuresh').textContent = formatCurrency(totalStats.Suresh);
+  document.getElementById('mealsSuresh').textContent = currentMonthMemberStats.mealsSuresh;
+  document.getElementById('tiffinShareSuresh').textContent = currentMonthMemberStats.tiffinShareSuresh.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  document.getElementById('totalSuresh').textContent = formatCurrency(currentMonthMemberStats.Suresh);
   
   // Alpesh
-  document.getElementById('mealsAlpesh').textContent = totalStats.mealsAlpesh;
-  document.getElementById('tiffinShareAlpesh').textContent = totalStats.tiffinShareAlpesh.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  document.getElementById('totalAlpesh').textContent = formatCurrency(totalStats.Alpesh);
+  document.getElementById('mealsAlpesh').textContent = currentMonthMemberStats.mealsAlpesh;
+  document.getElementById('tiffinShareAlpesh').textContent = currentMonthMemberStats.tiffinShareAlpesh.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  document.getElementById('totalAlpesh').textContent = formatCurrency(currentMonthMemberStats.Alpesh);
   
   // 4. Render Reports Table Rows
   // Current Month Summary
@@ -1072,16 +1073,16 @@ function renderExpenseHistoryTable() {
     const memberChips = exp.members.map(m => `<span class="member-chip ${m}">${m}</span>`).join(' ');
     
     tr.innerHTML = `
-      <td class="col-date">${formatDisplayDate(exp.date)}</td>
-      <td class="col-tiffins">${exp.tiffins.toLocaleString(undefined, { maximumFractionDigits: 2 })}</td>
-      <td class="col-price">${formatCurrency(exp.price)}</td>
-      <td class="col-total">${formatCurrency(exp.total)}</td>
-      <td class="col-members">
+      <td class="col-date" data-label="Date">${formatDisplayDate(exp.date)}</td>
+      <td class="col-tiffins" data-label="Tiffins">${exp.tiffins.toLocaleString(undefined, { maximumFractionDigits: 2 })}</td>
+      <td class="col-price" data-label="Price">${formatCurrency(exp.price)}</td>
+      <td class="col-total" data-label="Total">${formatCurrency(exp.total)}</td>
+      <td class="col-members" data-label="Shared By">
         <div class="history-member-chips">${memberChips}</div>
       </td>
-      <td class="col-share">${formatCurrency(exp.share)}</td>
-      <td class="col-notes" title="${exp.notes || ''}">${exp.notes || '-'}</td>
-      <td class="col-actions">
+      <td class="col-share" data-label="Per-person Share">${formatCurrency(exp.share)}</td>
+      <td class="col-notes" data-label="Notes" title="${exp.notes || ''}">${exp.notes || '-'}</td>
+      <td class="col-actions" data-label="Actions">
         <div class="action-btn-group">
           <button class="table-action-btn btn-edit" data-id="${exp.id}" data-action="edit" title="Edit Expense" aria-label="Edit Expense">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4z"/></svg>
